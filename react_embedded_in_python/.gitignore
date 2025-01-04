@@ -1,0 +1,31 @@
+# Python-specific ignores
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Flask instance and logs
+instance/
+*.log
+
+# React-specific ignores
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.vite/
+
+# Environment files
+.env
+*.env.local
+
+# OS-specific ignores
+.DS_Store
+Thumbs.db
+
+# IDE-specific ignores
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
