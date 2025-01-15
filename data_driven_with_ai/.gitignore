@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+env/
+venv/
+ENV/
+*.env
+*.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Logs
+*.log
+*.out
+*.err
+
+# Static and Generated Files
+static/sales_by_category.png
+static/example_dashboard.png
+
+# IDE Specific Files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+
+# Pip environment files
+*.egg-info/
+*.eggs
+
+# Testing
+htmlcov/
+*.coverage
+.cache/
+pytest_cache/
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+*.backup
+
+# Flask Specific Files
+instance/
+*.sqlite3
+
+# Build and Distribution
+build/
+dist/
+*.egg
+*.whl
+
+# Other
+__MACOSX/
