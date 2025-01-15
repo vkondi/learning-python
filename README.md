@@ -11,12 +11,17 @@ Here is a list of sub-projects included in this repository:
 ### 1. **Data-Driven Sales Dashboard**
 - **Description**: A web-based application that processes sales data, performs analytics, and visualizes insights using Pandas, Matplotlib, and Flask.
 - **Key Topics**: Data analysis, data visualization, Flask web framework.
-- **Location**: [data_driven_app/](data_driven_app/)
+- **Location**: [data_driven_app/](data_driven_app/README.md)
 
 ### 2. **React Embedded In Python App**
 - **Description**: A web application that integrates a React frontend with a Flask backend, combining the flexibility of React for the UI with Flask's lightweight API capabilities.
 - **Key Topics**: React frontend, Flash backend, API integration.
-- **Location**: [react_embedded_in_python/](react_embedded_in_python/)
+- **Location**: [react_embedded_in_python/](react_embedded_in_python/README.md)
+
+### 3. **Data Driven with AI**
+- **Description**: The **Data Driven with AI** project applies AI to sales data for smarter business strategies via analytics, segmentation, recommendations, and anomaly detection.
+- **Key Topics**: AI Prediction, data analysis, data visualisation.
+- **Location**: [data_driven_with_ai/](data_driven_with_ai/README.md)
 
 
 ## Getting Started
