@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.ensemble import IsolationForest
 
 # Load sales data from CSV file into a pandas DataFrame
-data = pd.read_csv('data/sales_anomaly_data.csv')
+data = pd.read_csv('data/anomaly_detection_data.csv')
 
 # Group the data by date column and calculate the total sales revenue for each day
 daily_sales = data.groupby('date')['total_revenue'].sum().reset_index()
