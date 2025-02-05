@@ -23,6 +23,11 @@ Here is a list of sub-projects included in this repository:
 - **Key Topics**: AI Prediction, data analysis, data visualisation.
 - **Location**: [data_driven_with_ai/](data_driven_with_ai/README.md)
 
+### 4. **Remove Image Background**
+- **Description**: The **Remove Image Background** project uses rembg library to remove background for the provided image.
+- **Key Topics**: Image utility.
+- **Location**: [remove-image-bg/](remove-image-bg/README.md)
+
 
 ## Getting Started
 ### Prerequisites
