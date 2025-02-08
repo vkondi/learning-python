@@ -7,7 +7,7 @@ app = Flask(__name__)
 # Initialize the database on startup
 initialize_database()
 
-@app.route('/get-all-employees', methods=['GET'])
+@app.route('/api/get-all-employees', methods=['GET'])
 def getAllEmployess():
     """Retrieve all employees from the database."""
     connection = sqlite3.connect(DATABASE_NAME)
