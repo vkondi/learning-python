@@ -18,7 +18,11 @@ export default function Table() {
     setShowEmpPopup(true);
   };
 
-  const handleDeleteClick = (data) => {};
+  const handleDeleteClick = (data) => {
+    setEmpPopupData(data.row);
+    setEmpPopupAction("delete");
+    setShowEmpPopup(true);
+  };
 
   const columns: GridColDef[] = useMemo(
     () => [

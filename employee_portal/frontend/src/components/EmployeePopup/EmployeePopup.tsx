@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { EmployeeType, useRootContext } from "../../context/RootContext";
 import Grid from "@mui/material/Grid/Grid";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function EmployeePopup() {
   const { showEmpPopup, setShowEmpPopup, empPopupAction, empPopupData } =
@@ -14,8 +14,25 @@ export default function EmployeePopup() {
 
   const [formData, setFormData] = useState<EmployeeType>(empPopupData);
 
-  const title =
-    empPopupAction === "add" ? "Add New Employee" : "Edit Employee Details";
+  const getPopupTitle = useCallback(() => {
+    switch (empPopupAction) {
+      case "add":
+        return "Add New Employee";
+      case "edit":
+        return "Edit Employee Details";
+      case "delete":
+        return "Delete Employee?";
+      default:
+        return "";
+    }
+  }, [empPopupAction]);
+
+  const title = getPopupTitle();
+  const deleteLabel =
+    empPopupAction === "delete"
+      ? `Are you sure you want to delete record of employee ${formData?.emp_name}`
+      : "";
+  const submitBtnLabel = empPopupAction === "delete" ? "Yes" : "Submit";
 
   const handleClose = () => {
     setShowEmpPopup(false);
@@ -23,6 +40,20 @@ export default function EmployeePopup() {
 
   const onSubmit = () => {
     console.log("formData: ", formData);
+
+    switch (empPopupAction) {
+      case "add":
+        // TODO: Invoke Add API
+        break;
+      case "edit":
+        // TODO: Invoke UPDATE API
+        break;
+      case "delete":
+        // TODO: Invoke Add API
+        break;
+      default:
+        return "";
+    }
   };
 
   const formatDate = (dateString: string | number | Date) => {
@@ -48,133 +79,139 @@ export default function EmployeePopup() {
   return (
     <Dialog open={showEmpPopup} onClose={handleClose}>
       <DialogTitle>{title}</DialogTitle>
-      <DialogContent>
-        <Grid container spacing={2}>
-          {empPopupAction === "edit" && (
+
+      {empPopupAction === "delete" ? (
+        <DialogContent>{deleteLabel}</DialogContent>
+      ) : (
+        <DialogContent>
+          <Grid container spacing={2}>
+            {empPopupAction === "edit" && (
+              <Grid item xs={6}>
+                <TextField
+                  autoFocus
+                  required
+                  margin="dense"
+                  id="id"
+                  name="id"
+                  label="ID"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  value={formData?.id}
+                />
+              </Grid>
+            )}
             <Grid item xs={6}>
               <TextField
-                autoFocus
                 required
                 margin="dense"
-                id="id"
-                name="id"
-                label="ID"
+                id="emp_name"
+                name="emp_name"
+                label="Name"
                 type="text"
                 fullWidth
                 variant="standard"
-                InputProps={{
-                  readOnly: true,
-                }}
-                value={formData?.id}
+                value={formData?.emp_name}
+                onChange={handleInputChange}
               />
             </Grid>
-          )}
-          <Grid item xs={6}>
-            <TextField
-              required
-              margin="dense"
-              id="emp_name"
-              name="emp_name"
-              label="Name"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={formData?.emp_name}
-              onChange={handleInputChange}
-            />
+            <Grid item xs={6}>
+              <TextField
+                required
+                margin="dense"
+                id="email"
+                name="email"
+                label="Email Address"
+                type="email"
+                fullWidth
+                variant="standard"
+                value={formData?.email}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                margin="dense"
+                id="phone"
+                name="phone"
+                label="Phone"
+                type="tel"
+                fullWidth
+                variant="standard"
+                value={formData?.phone}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                margin="dense"
+                id="emp_dob"
+                name="emp_dob"
+                label="Date of Birth"
+                type="date"
+                fullWidth
+                variant="standard"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={formData?.emp_dob ? formatDate(formData?.emp_dob) : ""}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                margin="dense"
+                id="address"
+                name="address"
+                label="Address"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={formData?.address}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                margin="dense"
+                id="designation"
+                name="designation"
+                label="Designation"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={formData?.designation}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                margin="dense"
+                id="salary"
+                name="salary"
+                label="Salary"
+                type="number"
+                fullWidth
+                variant="standard"
+                value={formData?.salary}
+                onChange={handleInputChange}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              required
-              margin="dense"
-              id="email"
-              name="email"
-              label="Email Address"
-              type="email"
-              fullWidth
-              variant="standard"
-              value={formData?.email}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              required
-              margin="dense"
-              id="phone"
-              name="phone"
-              label="Phone"
-              type="tel"
-              fullWidth
-              variant="standard"
-              value={formData?.phone}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              required
-              margin="dense"
-              id="emp_dob"
-              name="emp_dob"
-              label="Date of Birth"
-              type="date"
-              fullWidth
-              variant="standard"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={formData?.emp_dob ? formatDate(formData?.emp_dob) : ""}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              required
-              margin="dense"
-              id="address"
-              name="address"
-              label="Address"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={formData?.address}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              required
-              margin="dense"
-              id="designation"
-              name="designation"
-              label="Designation"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={formData?.designation}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              required
-              margin="dense"
-              id="salary"
-              name="salary"
-              label="Salary"
-              type="number"
-              fullWidth
-              variant="standard"
-              value={formData?.salary}
-              onChange={handleInputChange}
-            />
-          </Grid>
-        </Grid>
-      </DialogContent>
+        </DialogContent>
+      )}
+
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={onSubmit}>Submit</Button>
+        <Button onClick={onSubmit}>{submitBtnLabel}</Button>
       </DialogActions>
     </Dialog>
   );

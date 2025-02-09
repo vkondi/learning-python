@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 
+// Employee data structure
 export interface EmployeeType {
   address: string;
   designation: string;
@@ -19,14 +20,17 @@ export interface EmployeeType {
   salary: number;
 }
 
-type EmpPopupActionType = "add" | "edit" | undefined;
+// Popup action types
+type EmpPopupActionType = "add" | "edit" | "delete" | undefined;
 
+// Popup state structure
 interface EmpPopupType {
   open: boolean;
   data: EmployeeType | undefined;
   action?: EmpPopupActionType;
 }
 
+// Context state and actions
 interface RootContextType {
   loading: boolean;
   employees: EmployeeType[];
@@ -42,10 +46,12 @@ interface RootContextType {
   setEmpPopupAction: (action: EmpPopupActionType) => void;
 }
 
+// Create context
 const RootContext = createContext<RootContextType | undefined>(undefined);
 
 import { ReactNode } from "react";
 
+// Context provider
 export const RootProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [employees, setEmployees] = useState<EmployeeType[]>([]);
@@ -55,9 +61,9 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
     action: undefined,
   });
 
+  // Fetch employees
   const fetchEmployees = () => {
     setLoading(true);
-
     axios
       .get("/api/get-all-employees")
       .then((response) => {
@@ -71,8 +77,9 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
+  // Update employee (placeholder)
   const updateEmployee = () => {
-    // TODO: Replace with UPDATE API once it is ready
+    // TODO: Replace with UPDATE API
     axios
       .get("/api/get-all-employees")
       .then((response) => {
@@ -86,8 +93,9 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
+  // Delete employee (placeholder)
   const deleteEmployee = () => {
-    // TODO: Replace with DELETE API once it is ready
+    // TODO: Replace with DELETE API
     axios
       .get("/api/get-all-employees")
       .then((response) => {
@@ -101,6 +109,7 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
+  // Show/hide popup
   const setShowEmpPopup = (value: boolean) => {
     if (value) {
       setEmpPopup((prevEmpPopup) => ({
@@ -108,14 +117,16 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
         open: value,
       }));
     } else {
-      // On hiding empPopup, reset all data
+      // Reset data on hide
       setEmpPopup({
         open: value,
         data: undefined,
+        action: undefined
       });
     }
   };
 
+  // Set popup data
   const setEmpPopupData = (data1: EmployeeType) => {
     setEmpPopup((prevEmpPopup) => ({
       ...prevEmpPopup,
@@ -123,6 +134,7 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  // Set popup action
   const setEmpPopupAction = (action1: EmpPopupActionType) => {
     setEmpPopup((prevEmpPopup) => ({
       ...prevEmpPopup,
@@ -130,6 +142,7 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  // Fetch employees on mount
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -156,6 +169,7 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// Custom hook to use context
 export const useRootContext = () => {
   const context = useContext(RootContext);
   if (!context) {
