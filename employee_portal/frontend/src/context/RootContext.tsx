@@ -39,6 +39,7 @@ interface RootContextType {
   addEmployee: (data: EmployeeType) => Promise<any>;
   updateEmployee: (data: EmployeeType) => Promise<any>;
   deleteEmployee: (emp_id: EmployeeType["emp_id"]) => Promise<any>;
+  generateRandomEmployee: () => Promise<EmployeeType | undefined>;
   showEmpPopup: boolean;
   empPopupData: EmployeeType | undefined;
   empPopupAction: EmpPopupActionType;
@@ -143,6 +144,24 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
+  // Generate Random Employee API
+  const generateRandomEmployee = () => {
+    setLoading(true);
+
+    return axios
+      .get("/api/generate-random-employee")
+      .then((response) => {
+        return response?.data?.data;
+      })
+      .catch((error) => {
+        console.log("generateRandomEmployee >> error: ", error);
+        return undefined;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   // Show/hide popup
   const setShowEmpPopup = (value: boolean) => {
     if (value) {
@@ -190,6 +209,7 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
         addEmployee,
         updateEmployee,
         deleteEmployee,
+        generateRandomEmployee,
         showEmpPopup: empPopup.open,
         empPopupData: empPopup.data,
         empPopupAction: empPopup.action,

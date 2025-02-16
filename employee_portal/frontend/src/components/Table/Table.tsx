@@ -1,5 +1,6 @@
-import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
+import Tooltip from "@mui/material/Tooltip";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { useMemo } from "react";
@@ -12,13 +13,13 @@ export default function Table() {
   const { employees, setEmpPopupData, setEmpPopupAction, setShowEmpPopup } =
     useRootContext();
 
-  const handleEditClick = (data) => {
+  const handleEditClick = (data: GridRowParams<any>) => {
     setEmpPopupData(data.row);
     setEmpPopupAction("edit");
     setShowEmpPopup(true);
   };
 
-  const handleDeleteClick = (data) => {
+  const handleDeleteClick = (data: GridRowParams<any>) => {
     setEmpPopupData(data.row);
     setEmpPopupAction("delete");
     setShowEmpPopup(true);
@@ -52,14 +53,14 @@ export default function Table() {
         getActions: (data) => {
           return [
             <GridActionsCellItem
-              icon={<EditIcon />}
+              icon={<Tooltip title="Edit"><EditIcon sx={{ color: "#4c90d3" }} /></Tooltip> }
               label="Edit"
               className="textPrimary"
               onClick={() => handleEditClick(data)}
               color="inherit"
             />,
             <GridActionsCellItem
-              icon={<DeleteIcon />}
+              icon={<Tooltip title="Delete"><DeleteIcon sx={{ color: "#d34646" }}/></Tooltip>}
               label="Delete"
               onClick={() => handleDeleteClick(data)}
               color="inherit"

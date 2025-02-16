@@ -1,8 +1,10 @@
 import sqlite3
 from flask import Flask, request, jsonify
+from faker import Faker
 from db import initialize_database, DATABASE_NAME, EMP_EMPLOYMENT_DETAILS_TABLE, EMP_PERSONAL_DETAILS_TABLE
 
 app = Flask(__name__)
+faker = Faker()
 
 # Initialize the database on startup
 initialize_database()
@@ -146,6 +148,22 @@ def updateEmployee(emp_id):
         
     return jsonify({"message": "Employee updated successfully", "id": emp_id}), 200
     
+@app.route('/api/generate-random-employee',methods=['GET'])
+def generateRandomEmployee():
+    try: 
+        emp_data = {
+            'emp_name': faker.name(),
+            'emp_dob': faker.date_of_birth().strftime('%Y-%m-%d'),
+            'phone': faker.basic_phone_number(),
+            'address': faker.address(),
+            'email': faker.email(),
+            'salary': faker.random_int(min=1000000,max=10000000),
+            'designation': faker.job()
+        }
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500 # Handle exception error
+    
+    return jsonify({"message": "success", "data": emp_data}), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

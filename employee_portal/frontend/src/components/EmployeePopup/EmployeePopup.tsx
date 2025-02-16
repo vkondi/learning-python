@@ -1,9 +1,12 @@
 import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import DataObjectIcon from "@mui/icons-material/DataObject";
 import { EmployeeType, useRootContext } from "../../context/RootContext";
 import Grid from "@mui/material/Grid/Grid";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -18,10 +21,11 @@ export default function EmployeePopup() {
     updateEmployee,
     fetchEmployees,
     deleteEmployee,
+    generateRandomEmployee,
     loading,
   } = useRootContext();
 
-  const [formData, setFormData] = useState<EmployeeType>(empPopupData);
+  const [formData, setFormData] = useState<EmployeeType>(empPopupData ?? {});
 
   const getPopupTitle = useCallback(() => {
     switch (empPopupAction) {
@@ -107,6 +111,11 @@ export default function EmployeePopup() {
       default:
         return "";
     }
+  };
+
+  const handleGenerateRandomData = async () => {
+    const randomEmpData = await generateRandomEmployee();
+    if (randomEmpData) setFormData(randomEmpData);
   };
 
   const formatDate = (dateString: string | number | Date) => {
@@ -263,10 +272,35 @@ export default function EmployeePopup() {
       )}
 
       <DialogActions>
-        <Button onClick={handleClose} variant={cancelBtnVariant}>
+        {/* Generate random data button */}
+        {empPopupAction === "add" && (
+          <Tooltip title="Generate random data">
+            <IconButton
+              color="primary"
+              disabled={loading}
+              onClick={handleGenerateRandomData}
+            >
+              <DataObjectIcon fontSize="large" />
+            </IconButton>
+          </Tooltip>
+        )}
+
+        {/* Cancel */}
+        <Button
+          onClick={() => handleClose(false)}
+          variant={cancelBtnVariant}
+          disabled={loading}
+        >
           Cancel
         </Button>
-        <Button onClick={onSubmit} variant={submitBtnVariant} loading={loading}>
+
+        {/* Submit/Yes */}
+        <Button
+          onClick={onSubmit}
+          variant={submitBtnVariant}
+          loading={loading}
+          disabled={loading}
+        >
           {submitBtnLabel}
         </Button>
       </DialogActions>
