@@ -37,8 +37,8 @@ interface RootContextType {
   employees: EmployeeType[];
   fetchEmployees: () => void;
   addEmployee: (data: EmployeeType) => Promise<any>;
-  updateEmployee: () => void;
-  deleteEmployee: (emp_id: EmployeeType['emp_id']) => Promise<any>;
+  updateEmployee: (data: EmployeeType) => Promise<any>;
+  deleteEmployee: (emp_id: EmployeeType["emp_id"]) => Promise<any>;
   showEmpPopup: boolean;
   empPopupData: EmployeeType | undefined;
   empPopupAction: EmpPopupActionType;
@@ -103,16 +103,24 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
-  // Update employee (placeholder)
-  const updateEmployee = () => {
-    // TODO: Replace with UPDATE API
-    axios
-      .get("/api/get-all-employees")
+  // Update employee API
+  const updateEmployee = (data: EmployeeType) => {
+    return axios
+      .put(`/api/update-employee/${data?.emp_id}`, {
+        address: data?.address,
+        designation: data?.designation,
+        email: data?.email,
+        emp_dob: data?.emp_dob,
+        emp_name: data?.emp_name,
+        phone: data?.phone,
+        salary: data?.salary,
+      })
       .then((response) => {
-        setEmployees(response?.data ?? []);
+        return response;
       })
       .catch((error) => {
         console.log(error);
+        return error;
       })
       .finally(() => {
         setLoading(false);

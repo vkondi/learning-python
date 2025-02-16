@@ -90,6 +90,61 @@ def deleteEmployee(emp_id):
         connection.close()
         
     return jsonify({"message": "Employee deleted successfully", "id": emp_id}), 200
+
+    
+@app.route('/api/update-employee/<int:emp_id>', methods=['PUT'])
+def updateEmployee(emp_id):
+    data = request.json
+    
+    # Check for all required fields
+    if not all(key in data for key in ('emp_name', 'emp_dob', 'phone', 'address', 'email', 'salary', 'designation')):
+        return jsonify({'error': 'Missing required fields'}), 400
+    
+    # Connect to SQLite database
+    connection = sqlite3.connect(DATABASE_NAME)
+    cursor = connection.cursor()
+    
+    try:
+        # Update Personal details
+        cursor.execute(f"""
+                    UPDATE {EMP_PERSONAL_DETAILS_TABLE}
+                    SET
+                        emp_name = ?,
+                        emp_dob = ?,
+                        phone = ?,
+                        address = ?
+                    WHERE
+                        id = ?
+                       """, (data['emp_name'],data['emp_dob'],data['phone'],data['address'],emp_id))
+        
+        # Update Employment details
+        cursor.execute(f"""
+                       UPDATE {EMP_EMPLOYMENT_DETAILS_TABLE}
+                       SET
+                          email = ?,
+                          salary = ?,
+                          designation = ?
+                        WHERE
+                            emp_id = ?  
+                       """, (data['email'],data['salary'],data['designation'],emp_id))
+        
+        # Commit the changes
+        connection.commit()
+        
+        # Check if any rows were updated
+        if cursor.rowcount == 0:
+            connection.rollback() # Rollback if no updates were made
+            return jsonify({"message": "User not found or no changes were applied"}), 404
+        
+    except sqlite3.Error as e:
+        connection.rollback() # Rollback changes in case of an error
+        return jsonify({"error": str(e)}), 500 # Internal server error
+    
+    finally:
+        # Close connection
+        connection.close()
+        
+    return jsonify({"message": "Employee updated successfully", "id": emp_id}), 200
     
 
 if __name__ == '__main__':

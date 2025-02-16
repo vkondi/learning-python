@@ -15,6 +15,7 @@ export default function EmployeePopup() {
     empPopupAction,
     empPopupData,
     addEmployee,
+    updateEmployee,
     fetchEmployees,
     deleteEmployee,
     loading,
@@ -55,9 +56,9 @@ export default function EmployeePopup() {
   const cancelBtnVariant =
     empPopupAction === "delete" ? "contained" : "outlined";
 
-  const handleClose = () => {
+  const handleClose = (syncData: boolean) => {
     setShowEmpPopup(false);
-    fetchEmployees();
+    if (syncData === true) fetchEmployees();
   };
 
   const onSubmit = async () => {
@@ -70,7 +71,7 @@ export default function EmployeePopup() {
 
         if (resp.status === 201) {
           // TODO: Add a success snackbar
-          handleClose();
+          handleClose(true);
         } else {
           const addError = resp?.response?.data?.error ?? resp?.message;
           console.log("Add API Error: ", addError);
@@ -78,7 +79,17 @@ export default function EmployeePopup() {
 
         break;
       case "edit":
-        // TODO: Invoke UPDATE API
+        const updateResp = await updateEmployee(formData);
+        console.log("Resp: ", updateResp);
+
+        if (updateResp.status === 200) {
+          // TODO: Add a success snackbar
+          handleClose(true);
+        } else {
+          const updateError =
+            updateResp?.response?.data?.error ?? updateResp?.message;
+          console.log("Update API Error: ", updateError);
+        }
         break;
       case "delete":
         const deleteResp = await deleteEmployee(formData?.emp_id);
@@ -86,7 +97,7 @@ export default function EmployeePopup() {
 
         if (deleteResp.status === 200) {
           // TODO: Add a success snackbar
-          handleClose();
+          handleClose(true);
         } else {
           const deleteError =
             deleteResp?.response?.data?.error ?? resp?.message;
@@ -142,7 +153,7 @@ export default function EmployeePopup() {
                   InputProps={{
                     readOnly: true,
                   }}
-                  value={formData?.id}
+                  value={formData?.emp_id}
                 />
               </Grid>
             )}
