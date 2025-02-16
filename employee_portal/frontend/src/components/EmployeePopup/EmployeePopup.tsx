@@ -9,8 +9,14 @@ import Grid from "@mui/material/Grid/Grid";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function EmployeePopup() {
-  const { showEmpPopup, setShowEmpPopup, empPopupAction, empPopupData } =
-    useRootContext();
+  const {
+    showEmpPopup,
+    setShowEmpPopup,
+    empPopupAction,
+    empPopupData,
+    addEmployee,
+    loading,
+  } = useRootContext();
 
   const [formData, setFormData] = useState<EmployeeType>(empPopupData);
 
@@ -51,12 +57,21 @@ export default function EmployeePopup() {
     setShowEmpPopup(false);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     console.log("formData: ", formData);
 
     switch (empPopupAction) {
       case "add":
-        // TODO: Invoke Add API
+        const resp = await addEmployee(formData);
+        console.log("Resp: ", resp);
+
+        if (resp.status === 201) {
+          // TODO: Add a success snackbar
+          handleClose();
+        } else {
+          const error = resp?.response?.data?.error ?? resp?.message;
+        }
+
         break;
       case "edit":
         // TODO: Invoke UPDATE API
@@ -226,7 +241,7 @@ export default function EmployeePopup() {
         <Button onClick={handleClose} variant={cancelBtnVariant}>
           Cancel
         </Button>
-        <Button onClick={onSubmit} variant={submitBtnVariant}>
+        <Button onClick={onSubmit} variant={submitBtnVariant} loading={loading}>
           {submitBtnLabel}
         </Button>
       </DialogActions>

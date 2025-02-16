@@ -35,6 +35,7 @@ interface RootContextType {
   loading: boolean;
   employees: EmployeeType[];
   fetchEmployees: () => void;
+  addEmployee: (data: EmployeeType) => Promise<any>;
   updateEmployee: () => void;
   deleteEmployee: () => void;
   showEmpPopup: boolean;
@@ -71,6 +72,31 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  // Add Employee API Call
+  const addEmployee = (data: EmployeeType) => {
+    // TODO: Replace with UPDATE API
+    return axios
+      .post("/api/add-employee", {
+        address: data?.address,
+        designation: data?.designation,
+        email: data?.email,
+        emp_dob: data?.emp_dob,
+        emp_name: data?.emp_name,
+        phone: data?.phone,
+        salary: data?.salary,
+      })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+        return error;
       })
       .finally(() => {
         setLoading(false);
@@ -121,7 +147,7 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
       setEmpPopup({
         open: value,
         data: undefined,
-        action: undefined
+        action: undefined,
       });
     }
   };
@@ -153,6 +179,7 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
         loading,
         employees,
         fetchEmployees,
+        addEmployee,
         updateEmployee,
         deleteEmployee,
         showEmpPopup: empPopup.open,
