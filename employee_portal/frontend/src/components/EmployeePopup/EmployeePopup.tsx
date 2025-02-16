@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { EmployeeType, useRootContext } from "../../context/RootContext";
 import Grid from "@mui/material/Grid/Grid";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function EmployeePopup() {
   const { showEmpPopup, setShowEmpPopup, empPopupAction, empPopupData } =
@@ -28,11 +28,24 @@ export default function EmployeePopup() {
   }, [empPopupAction]);
 
   const title = getPopupTitle();
-  const deleteLabel =
-    empPopupAction === "delete"
-      ? `Are you sure you want to delete record of employee ${formData?.emp_name}`
-      : "";
+  const deleteLabel = useMemo(
+    () =>
+      empPopupAction === "delete" ? (
+        <>
+          Are you sure you want to delete record of employee{" "}
+          <b>{formData?.emp_name}</b>?
+        </>
+      ) : (
+        ""
+      ),
+    [formData?.emp_name]
+  );
+
   const submitBtnLabel = empPopupAction === "delete" ? "Yes" : "Submit";
+  const submitBtnVariant =
+    empPopupAction === "delete" ? "outlined" : "contained";
+  const cancelBtnVariant =
+    empPopupAction === "delete" ? "contained" : "outlined";
 
   const handleClose = () => {
     setShowEmpPopup(false);
@@ -210,8 +223,12 @@ export default function EmployeePopup() {
       )}
 
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={onSubmit}>{submitBtnLabel}</Button>
+        <Button onClick={handleClose} variant={cancelBtnVariant}>
+          Cancel
+        </Button>
+        <Button onClick={onSubmit} variant={submitBtnVariant}>
+          {submitBtnLabel}
+        </Button>
       </DialogActions>
     </Dialog>
   );
