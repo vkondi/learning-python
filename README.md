@@ -28,6 +28,11 @@ Here is a list of sub-projects included in this repository:
 - **Key Topics**: Image utility.
 - **Location**: [remove-image-bg/](remove-image-bg/README.md)
 
+### 5. **Employee Portal**
+- **Description**: The **Employee Portal** is a web application for managing employee data, featuring add, edit, delete, and view functionalities, built with a Python Flask backend and a React frontend.
+- **Key Topics**: Employee Management, Python API.
+- **Location**: [employee_portal/](employee_portal/README.md)
+
 
 ## Getting Started
 ### Prerequisites
