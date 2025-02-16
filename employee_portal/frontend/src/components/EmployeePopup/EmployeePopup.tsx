@@ -15,6 +15,8 @@ export default function EmployeePopup() {
     empPopupAction,
     empPopupData,
     addEmployee,
+    fetchEmployees,
+    deleteEmployee,
     loading,
   } = useRootContext();
 
@@ -55,6 +57,7 @@ export default function EmployeePopup() {
 
   const handleClose = () => {
     setShowEmpPopup(false);
+    fetchEmployees();
   };
 
   const onSubmit = async () => {
@@ -69,7 +72,8 @@ export default function EmployeePopup() {
           // TODO: Add a success snackbar
           handleClose();
         } else {
-          const error = resp?.response?.data?.error ?? resp?.message;
+          const addError = resp?.response?.data?.error ?? resp?.message;
+          console.log("Add API Error: ", addError);
         }
 
         break;
@@ -77,7 +81,17 @@ export default function EmployeePopup() {
         // TODO: Invoke UPDATE API
         break;
       case "delete":
-        // TODO: Invoke Add API
+        const deleteResp = await deleteEmployee(formData?.emp_id);
+        console.log("Resp: ", deleteResp);
+
+        if (deleteResp.status === 200) {
+          // TODO: Add a success snackbar
+          handleClose();
+        } else {
+          const deleteError =
+            deleteResp?.response?.data?.error ?? resp?.message;
+          console.log("Delete API Error: ", deleteError);
+        }
         break;
       default:
         return "";

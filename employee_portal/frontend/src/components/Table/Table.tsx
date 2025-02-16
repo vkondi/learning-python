@@ -26,7 +26,7 @@ export default function Table() {
 
   const columns: GridColDef[] = useMemo(
     () => [
-      { field: "id", headerName: "ID", width: 70 },
+      { field: "emp_id", headerName: "ID", width: 70 },
       { field: "emp_name", headerName: "Name", flex: 3 },
       { field: "email", headerName: "Email", minWidth: 150, flex: 1 },
       {

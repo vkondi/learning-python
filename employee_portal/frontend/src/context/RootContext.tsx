@@ -16,6 +16,7 @@ export interface EmployeeType {
   emp_dob: string;
   emp_name: string;
   id: number;
+  emp_id: number;
   phone: string;
   salary: number;
 }
@@ -37,7 +38,7 @@ interface RootContextType {
   fetchEmployees: () => void;
   addEmployee: (data: EmployeeType) => Promise<any>;
   updateEmployee: () => void;
-  deleteEmployee: () => void;
+  deleteEmployee: (emp_id: EmployeeType['emp_id']) => Promise<any>;
   showEmpPopup: boolean;
   empPopupData: EmployeeType | undefined;
   empPopupAction: EmpPopupActionType;
@@ -80,7 +81,6 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
 
   // Add Employee API Call
   const addEmployee = (data: EmployeeType) => {
-    // TODO: Replace with UPDATE API
     return axios
       .post("/api/add-employee", {
         address: data?.address,
@@ -119,16 +119,16 @@ export const RootProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
-  // Delete employee (placeholder)
-  const deleteEmployee = () => {
-    // TODO: Replace with DELETE API
-    axios
-      .get("/api/get-all-employees")
+  // Delete employee API
+  const deleteEmployee = (emp_id: EmployeeType["id"]) => {
+    return axios
+      .delete(`/api/delete-employee/${emp_id}`)
       .then((response) => {
-        setEmployees(response?.data ?? []);
+        return response;
       })
       .catch((error) => {
         console.log(error);
+        return error;
       })
       .finally(() => {
         setLoading(false);
