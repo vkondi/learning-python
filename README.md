@@ -33,6 +33,11 @@ Here is a list of sub-projects included in this repository:
 - **Key Topics**: Employee Management, Python API.
 - **Location**: [employee_portal/](employee_portal/README.md)
 
+### 5. **Requirements txt file generator**
+- **Description**: The **Requirements txt file generator** program generates a `requirement.txt` output with latest package versions by scraping PyPi website.
+- **Key Topics**: Web scraping.
+- **Location**: [requirements_txt_generator/](requirements_txt_generator/README.md)
+
 
 ## Getting Started
 ### Prerequisites
